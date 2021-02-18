@@ -1,2 +1,2 @@
-# pytuner
+# PyTuner
 Application for Tuning Guitars. (MacOS)
