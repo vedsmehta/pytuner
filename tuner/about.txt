@@ -1,0 +1,15 @@
+PyTuner is a desktop-based guitar tuner that is fully coded in Python.
+
+Requirements: 
+Python>=3.8.3
+sounddevice>=0.4.1
+scipy>=1.6.0
+numpy>=1.19.2
+
+This tuner allows you to play a note on the virtual guitar and you
+can manually match it back. You can also use the Automatic tuner which
+tells you whether or not a string is properly tuned. 
+
+All code is available on github. This project is liscensed under GNU
+GPL 3.0 Liscense
+(Read LISCENSE.txt).
