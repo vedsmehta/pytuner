@@ -342,7 +342,7 @@ class Tuner(Tk):
         """
         self.title_label = ttk.Label(self, text='PyTuner', style='Title.TLabel')
         self.title_label.place(x=275, y=0)
-        self.dropdown_label = "E2: 82.42\nA2: 110.00\nD3: 146.83\nG3: 196.00\nB3:246.94\nE4: 329.63"
+        self.dropdown_label = "E2: 82.42\nA2: 110.00\nD3: 146.83\nG3: 196.00\nB3: 246.94\nE4: 329.63"
         self.dropdown = LabelDropdown(self, self.dropdown_label, "View Pitch Frequencies", 
                                       'Futura 12', '#000000', '#ffffff', 'Futura 14',
                                       '#000000', '#ffffff')
