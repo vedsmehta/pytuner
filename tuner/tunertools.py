@@ -5,25 +5,25 @@ import numpy as np
 from scipy.io.wavfile import read as wavread
 import sounddevice as sd
 
-
 def audio_read(wav):
-    """[summary]
+    """
+    reads .wav and returns numpy.ndarray
 
     Args:
-        wav ([type]): [description]
-
-    Returns:
-        [type]: [description]
+        wav str:
+            path to wav file
     """
     [sr, sig] = wavread(wav)
     return sr, sig
 
-
 def play(audio_path):
-    """[summary]
+    """
+    play audio as numpy.ndarray
 
     Args:
-        audio_path ([type]): [description]
+        audio_path str:
+            path to audio file
+
     """
     sd.play(audio_read(audio_path)[1], samplerate=44100, device="Speakers")
 
@@ -31,72 +31,37 @@ def play(audio_path):
 # (http://recherche.ircam.fr/equipes/pcm/cheveign/ps/2002_JASA_YIN_proof.pdf)
 #  - Autocorrelation and YIN
 
-# def difference_function(audio, W, t_max):
-#     # Difference Function from Equation 6
-#     # Note that this can be sped up to an O(n log n) time complexity with
-# Fast Fourrier Transforms using scipy/numpy modules
-
-#     diff = [0] * t_max
-#     for t in range(1, t_max):
-#         for i in range(W-t_max):
-#             diff[t] = int(audio[i] - audio[i + t]) ** 2
-#     return diff
-
 
 def cummalative_mean_norm_df(df, N):
-    """[summary]
+    """
+    takes the cummalative mean for normalized difference function
 
     Args:
-        df ([type]): [description]
-        N ([type]): [description]
-
-    Returns:
-        [type]: [description]
+        df iterable:
+            difference function
+        N int:
+            length of difference function
     """
+    
     # cummalative mean normalized difference function derived from
     # equation 8 of YIN paper
     CMNDF = df[1:] * list(range(1, N)) / np.cumsum(df[1:]).astype(float)
     return np.insert(CMNDF, 0, 1)
 
 
-# def differenceFunction(x, N, tau_max):
-#     """
-#     This is a lower level function
-#     to get the difference function of an unknown period
-
-#     Parameters
-#     ----------
-#     audio : list
-#         input signal.
-#     W : int
-#         length of audio.
-#     t_max : int
-#         maximum signal frequency.
-
-#     Returns
-#     -------
-#     np.ndarray
-#         difference function for each time window (t_max).
-
-#     """
-#     x = np.array(x, np.float64)
-#     w = x.size
-#     x_cumsum = np.concatenate((np.array([0]), (x * x).cumsum()))
-#     conv = fftconvolve(x, x[::-1])
-#     tmp = x_cumsum[w:0:-1] + x_cumsum[w] - x_cumsum[:w] - 2 * conv[w - 1:]
-#     return tmp[:tau_max + 1]
-
-
 def differenceFunction(audio, w, t_max):
-    """[summary]
+    """
+    function to calculate the difference of an unknown window 
+    (between two different numbers unknown)
 
     Args:
-        audio ([type]): [description]
-        w ([type]): [description]
-        t_max ([type]): [description]
+        audio iterable:
+            audio passed through audio_read()
+        w int:
+            length of audio
+        t_max int:
+            maximum time constant
 
-    Returns:
-        [type]: [description]
     """
 
     x = np.array(audio, np.float64)
@@ -114,17 +79,20 @@ def differenceFunction(audio, w, t_max):
 
 
 def pitch(CMNDF, t_min, t_max, ht=0.1):
-    """[summary]
-
-    Args:
-        CMNDF ([type]): [description]
-        t_min ([type]): [description]
-        t_max ([type]): [description]
-        ht (float, optional): [description]. Defaults to 0.1.
-
-    Returns:
-        [type]: [description]
     """
+    find pitch of certain time interval
+    Args:
+        CMNDF iterable:
+            cummalative mean normalized difference function
+        t_min :
+            minumum time constant
+        t_max (undefined):
+            maximum time constant
+        ht=0.1 float:
+            harmonic threshold
+
+    """
+    
     t = t_min
     while t < t_max:
         if CMNDF[t] < ht:
@@ -138,20 +106,27 @@ def pitch(CMNDF, t_min, t_max, ht=0.1):
 
 def YIN(sig, sr, wl=882, ws=441, f0_min=50,
         f0_max=500, ht=0.1):
-    """[summary]
+    """
+    Description of YIN
 
     Args:
-        sig ([type]): [description]
-        sr ([type]): [description]
-        wl (int, optional): [description]. Defaults to 882.
-        ws (int, optional): [description]. Defaults to 441.
-        f0_min (int, optional): [description]. Defaults to 50.
-        f0_max (int, optional): [description]. Defaults to 500.
-        ht (float, optional): [description]. Defaults to 0.1.
+        sig iterable:
+            numpy array of audio
+        sr int:
+            samplerate
+        wl=882 int:
+            length of calculation window for pitch
+        ws=441 int:
+            step for calculation window
+        f0_min=50 int:  
+            minimum frequency threshold
+        f0_max=500 int:
+            maximum frequency threshold
+        ht=0.1 float:
+            harmonic threshold
 
-    Returns:
-        [type]: [description]
     """
+    
     t_min = int(sr / f0_max)
     t_max = int(sr / f0_min)
 
@@ -183,11 +158,7 @@ def YIN(sig, sr, wl=882, ws=441, f0_min=50,
 
 
 def notes():
-    """[summary]
-
-    Returns:
-        [type]: [description]
-    """
+    """ returns list of playable notes on guitar """
     notes_list = [['E2', '82.41'],
                     ['F2', '87.31'],
                     ['F#2/Gb2', '92.5'],
@@ -231,14 +202,15 @@ def notes():
 
 
 def mean(arr):
-    """[summary]
+    """
+    calculate mean of an array
 
     Args:
-        arr ([type]): [description]
+        arr iterable:
+            array to be averaged
 
-    Returns:
-        [type]: [description]
     """
+    
     return sum(arr)/len(arr)
 
 
@@ -247,45 +219,28 @@ def avg_pitch(input_list: list):
     Takes the largest consecutive nonzero substring and averages it.
 
     Parameters
-    ----------
-    input_list : list
-        array or list to be manipulated/averaged.
+        input_list : list
+            array or list to be manipulated/averaged.
 
-    Returns
-    -------
-    float
-        average of list (largest consecutive nonzero subset).
 
     """
 
     g = groupby(input_list, key=lambda x: x > 0.0)
     m = max([list(s) for v, s in g if v > 0.0], key=len)
     return mean(m)
-    # max_subset = []
-    # current_max_subset = []
-
-    # for number in input_list:
-    #     if number > 0:
-    #         current_max_subset.append(number)
-    #     else:
-    #         if len(current_max_subset) > len(max_subset):
-    #             max_subset = current_max_subset
-    #         current_max_subset = []
-    # print(input_list, max_subset)
-    # return mean(max_subset)
 
 
 def quantize(num, quant):
-    """[summary]
-
-    Args:
-        num ([type]): [description]
-        quant ([type]): [description]
-
-    Returns:
-        [type]: [description]
     """
+    round to the nearest value in a list
+    Args:
+        num float:
+            number to be quantized
+        quant iterable:
+            list to be quantized to
 
+    """
+    
     mids = [(quant[i] + quant[i + 1]) / 2.0
             for i in range(len(quant) - 1)]
     ind = bisect.bisect_right(mids, num)
