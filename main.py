@@ -10,6 +10,8 @@ from tkinter import ttk, Tk
 from tkinter.ttk import Style
 import sounddevice as sd
 import tuner.tunertools as tunertools
+from tuner.dropdown import LabelDropdown
+
 
 class AboutDialog(tk.Toplevel):
     """
@@ -156,7 +158,6 @@ class Tuner(Tk):
         self.style.map('Note.TButton',
                         foreground=[('pressed', '#95341f')],
                         background=[('pressed','#ffffff'),])
-
         self.style.configure('Rec.TButton', font='Futura 16',
                                 foreground='white', background='black',
                                 padx=10, pady=10, relief='flat')
@@ -341,7 +342,11 @@ class Tuner(Tk):
         """
         self.title_label = ttk.Label(self, text='PyTuner', style='Title.TLabel')
         self.title_label.place(x=275, y=0)
-
+        self.dropdown_label = "E2: 82.42\nA2: 110.00\nD3: 146.83\nG3: 196.00\nB3:246.94\nE4: 329.63"
+        self.dropdown = LabelDropdown(self, self.dropdown_label, "View Pitch Frequencies", 
+                                      'Futura 12', '#000000', '#ffffff', 'Futura 14',
+                                      '#000000', '#ffffff')
+        self.dropdown.place(x=5, y=85)
 def main():
     """Create and Display Tuner() class"""
     root = Tuner()
