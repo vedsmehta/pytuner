@@ -1,2 +1,4 @@
 # pytuner
-MacOS Guitar Tuning Application
+## MacOS Guiitar Tuning Application
+
+### 2021 Georgia Science and Technology Fair Project

@@ -5,60 +5,38 @@ from tkinter import ttk
 
 class LabelDropdown(tk.Frame):
     """
-    Description of LabelDropdown
-
-    Attributes:
-        'background' str:
-            background of frame
-        label str:
-            label for dropdown
-        buttonlabel (type): 
-            text on dropdown (button)
-        label_font str:
-            font config for label
-        label_fg str:
-            hex color for foreground
-        label_bg str:
-            hex color for background
-        buttonlabel_font str:
-            font config for button text
-        buttonlabel_fg str:
-            foreground hex for button
-        buttonlabel_bg str:
-            background hex for button
-        indent str:
-            indent of text in spaces
-        button ttk.Button:
-            button widget
-
-    Inheritance:
-        tk.Frame:
-            widget conainter
-
-    Args:
-        master tk.Toplevel, tk.Tk, etc.:
-        label str:
-            text under button (to be displayed)
-        buttonlabel str:
-            label for button
-        label_font str:
-            font config for label
-        label_fg str:
-            foreground hex for label
-        label_bg str:
-            background hex for label
-        buttonlabel_font str:
-            font config for button
-        buttonlabel_fg str:
-            foreground hex for button
-        buttonlabel_bg str:
-            background hex for button
-        indent='' str:
-            indent in spaces for text
-
+    Dropdown - like object which projects a multiline string to GUI
+    see LabelDropdown.__init__ for more details.
     """
+
+
     def __init__(self, master, label, buttonlabel, label_font, label_fg, label_bg,
                  buttonlabel_font, buttonlabel_fg, buttonlabel_bg, indent='  '):
+        """__init__.
+
+        Parameters
+        ----------
+        master : tk.Tk
+            master
+        label : str
+            label
+        buttonlabel : str
+            label for button
+        label_font : str
+            font for button
+        label_fg : str
+            forground for button
+        label_bg : str
+            background for button
+        buttonlabel_font : str
+            font for button
+        buttonlabel_fg : str
+            foreground for button
+        buttonlabel_bg : str
+            background for button
+        indent : str
+            indentation for label
+        """
         super(LabelDropdown, self).__init__()
         self['background'] = '#ffffff'
         self.label = label
@@ -123,3 +101,4 @@ class LabelDropdown(tk.Frame):
                                    # })]
                                 })]
                           )
+
